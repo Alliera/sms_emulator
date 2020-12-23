@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-10 text-center">
+
+            <form id="form_search_phone">
+                {% csrf_token %}
+                <div class="form-row mt-5">
+                    {% csrf_token %}
+                    <div class="form-group col-6">
+                        <label for="enterprise">Enterprise</label>
+                        <select id="enterprise" name="enterprise" type="text"
+                                class="form-control">
+                            <option value="feedback_36">feedback_36</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="phone_number">Phone number</label>
+                        <input id="phone_number" name="phone_number"
+                               type="text"
+                               class="form-control" placeholder="Phone number">
+                    </div>
+                    <div class="form-group col">
+                        <button id="btn_search_phone" type="button"
+                                class="btn btn-success pull-right">
+                            <i class="fa fa-refresh"></i> Search / Refresh
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center mb-4">
+        <div class="col-md-10">
+
+            <div class="card">
+                <div class="card-header">
+                    <form id="form_sending_sms" class="send-message-form">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input id="text_to_send" type="text"
+                                   name="text_to_send"
+                                   class="form-control input-sm"
+                                   placeholder="Type your message here..."
+                            />
+                            <span class="input-group-append">
+                                <button id="btn_send_message"
+                                        class="btn btn-primary" type="button">
+                                    Send <i class="fa fa-paper-plane"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-body messages-box">
+
+                    <ul id="messages_list" class="list-unstyled messages-list">
+
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

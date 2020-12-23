@@ -1,0 +1,51 @@
+{% block content %}
+
+    {% load static %}
+
+    {% for sms_message in sms_messages %}
+
+
+        <li class="{% if sms_message.direction == 'Incoming' %}messages-you{% else %}messages-me{% endif %} clearfix">
+
+            <span class="message-img img-circle">
+                {% if sms_message.direction == 'Incoming' %}
+                    <img src="{% static 'img/marvin3.png' %}" alt="User Avatar"
+                         class="avatar-sm border rounded-circle">
+                {% else %}
+                    <img src="{% static 'img/user.png' %}" alt="User Avatar"
+                         class="avatar-sm border rounded-circle">
+                {% endif %}
+            </span>
+
+            <div class="message-body clearfix">
+                <div class="message-header">
+                    <strong class="messages-title">
+                        {% if sms_message.direction == 'Incoming' %} SMS Emulator
+                        {% else %} Me
+                        {% endif %}
+                    </strong>
+
+                    <small class="time-messages text-muted">
+                        <span class="fa fa-clock-o"></span>&nbsp;
+                        {{ sms_message.creation|date:"Y-m-d H:m:s" }}
+                    </small>
+                </div>
+                <p class="messages-p {% if sms_message.direction == 'Incoming' %}alert-primary{% else %}alert-success{% endif %}">
+
+                    <span class="badge badge-info">To:</span>
+                    <small>{{ sms_message.to_receiver }}</small>
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="badge badge-info">From:</span>
+                    <small>{{ sms_message.from_sender }}</small>
+
+                    <br>
+                    {{ sms_message.text }}
+                </p>
+            </div>
+        </li>
+
+    {% endfor %}
+
+
+
+{% endblock %}
