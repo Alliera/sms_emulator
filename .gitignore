@@ -6,3 +6,7 @@ venv
 
 .idea
 *.log
+
+media
+sms_emulator/settings.py
+/sms_emulator/static/admin/
