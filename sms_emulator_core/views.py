@@ -1,12 +1,16 @@
 import json
+import logging
 
 import requests
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 
-from sms_emulator_core.models import Enterprise, SMSMessage
+from sms_emulator_core.models import SMSMessage, Enterprise
+from sms_emulator_core.forms import SMSReceiveForm, SMSSendForm
+
+logger = logging.getLogger(__name__)
 
 
 class SearchView(View):
@@ -38,34 +42,35 @@ class SMSSendView(View):
     """
     @staticmethod
     def post(request):
-        enterprise_name = request.POST.get('enterprise')
-        from_sender = request.POST.get('phone_number')
-        sms_message = request.POST.get('sms_message')
-
-        if not all([enterprise_name, from_sender, sms_message]):
-            return HttpResponse(
-                'Not all fields has been received!', status=400
+        send_form = SMSSendForm(request.POST)
+        if send_form.is_valid():
+            enterprise = Enterprise.objects.get(
+                name=send_form.cleaned_data['enterprise']
+            )
+            SMSMessage.objects.create(
+                from_sender=send_form.cleaned_data['phone_number'],
+                to_receiver='sms_emulator',
+                text=send_form.cleaned_data['sms_message'],
+                direction=SMSMessage.OUTGOING,
+                enterprise=enterprise
             )
 
-        enterprise = Enterprise.objects.get(name=enterprise_name)
+            r = requests.post(
+                url=enterprise.webhook_url,
+                data={
+                    'from': send_form.cleaned_data['phone_number'],
+                    'to': 'sms_emulator',
+                    'text': send_form.cleaned_data['sms_message']
+                }
+            )
 
-        SMSMessage.objects.create(
-            from_sender=from_sender.replace(' ', ''),
-            to_receiver='sms_emulator',
-            text=sms_message,
-            direction=SMSMessage.OUTGOING,
-            enterprise=enterprise
-        )
+            logger.info(f"{r.status_code}: {r.text}")
 
-        r = requests.post(url=enterprise.webhook_url, data={
-            'from': from_sender.replace(' ', ''),
-            'to': 'sms_emulator',
-            'text': sms_message
-        })
-
-        print(r.text)
-
-        return JsonResponse({'status': 'Ok'}, status=200)
+            return JsonResponse({'status': 'Ok'}, status=200)
+        else:
+            return JsonResponse(
+                {'form_errors': send_form.errors}, status=400
+            )
 
 
 class SMSReceiveView(View):
@@ -74,28 +79,26 @@ class SMSReceiveView(View):
     """
     @staticmethod
     def post(request):
-        data = json.loads(request.body)
-        enterprise_name = data.get('enterprise')
-        from_sender = data.get('from')
-        to_receiver = data.get('to')
-        sms_message = data.get('text')
-
-        if not all([enterprise_name, from_sender, sms_message]):
-            return HttpResponse(
-                'Not all fields has been received!', status=400
+        receive_form = SMSReceiveForm(json.loads(request.body))
+        if receive_form.is_valid():
+            enterprise = Enterprise.objects.get(
+                name=receive_form.cleaned_data['enterprise']
+            )
+            SMSMessage.objects.create(
+                from_sender=receive_form.cleaned_data['from'],
+                to_receiver=receive_form.cleaned_data['to'],
+                text=receive_form.cleaned_data['text'],
+                direction=SMSMessage.INCOMING,
+                enterprise=enterprise
             )
 
-        enterprise = Enterprise.objects.get(name=enterprise_name)
-
-        SMSMessage.objects.create(
-            from_sender=from_sender.replace(' ', ''),
-            to_receiver=to_receiver,
-            text=sms_message,
-            direction=SMSMessage.INCOMING,
-            enterprise=enterprise
-        )
-
-        return JsonResponse({'status': 'Ok'}, status=200)
+            return JsonResponse(
+                {'status': 'Ok'}, status=200
+            )
+        else:
+            return JsonResponse(
+                {'form_errors': receive_form.errors}, status=400
+            )
 
 
 class ChatView(View):

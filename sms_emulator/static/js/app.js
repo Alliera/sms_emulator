@@ -60,8 +60,8 @@ $(function () {
                 'phone_number': phone_number,
                 'enterprise': enterprise
             },
-            success: function (result) {
-                $("#messaging_area").empty().html(result);
+            success: function () {
+                $("#text_to_send").val('');
                 $.ajax({
                     headers: {"X-CSRFToken": csrf_token},
                     url: '/',
