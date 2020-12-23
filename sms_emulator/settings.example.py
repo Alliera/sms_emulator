@@ -55,11 +55,11 @@ WSGI_APPLICATION = 'sms_emulator.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sms_emulator',
-        'USER': 'root',
-        'PASSWORD': 'lmd',
-        'HOST': 'localhost',
-        'PORT': '3307',
+        'NAME': os.environ.get('MYSQL_DATABASE', 'sms_emulator'),
+        'USER': os.environ.get('MYSQL_USER', 'root'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'lmd'),
+        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
+        'PORT': '3306',
     }
 }
 
