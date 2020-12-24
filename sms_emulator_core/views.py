@@ -13,7 +13,7 @@ from sms_emulator_core.forms import SMSReceiveForm, SMSSendForm
 logger = logging.getLogger(__name__)
 
 
-class SearchView(View):
+class MainSearchView(View):
     @staticmethod
     def get(request):
         return render(request, 'chat/chat.html')
@@ -99,9 +99,3 @@ class SMSReceiveView(View):
             return JsonResponse(
                 {'form_errors': receive_form.errors}, status=400
             )
-
-
-class ChatView(View):
-    @staticmethod
-    def get(request):
-        return render(request, 'chat/chat.html')
