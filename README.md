@@ -19,3 +19,12 @@ cd sms_emulator/demo_deployment
 build.sh
 ```
 6. Press Ctrl-Z to detach output and go to http://localhost:9000
+
+### Usage:
+* Go to the http://localhost:9000/admin and create a record for enterprise, 
+   including proper webhook URL for REST API side.
+   Example: 
+   ```
+   http://0.0.0.0:8002/api/rest/gateway-answer-view/sms/test/inbox/feedback_36/
+   ```
+   
