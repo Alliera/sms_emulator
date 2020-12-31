@@ -84,4 +84,30 @@ $(function () {
         })
     });
 
+    $("#btn_delete_messages").on('click', function () {
+        var csrf_token = $("input[name=csrfmiddlewaretoken]").val();
+        var phone_number = $("#phone_number").val();
+        var enterprise = $("#enterprise").val()
+
+        $.ajax({
+            headers: {"X-CSRFToken": csrf_token},
+            url: '/?' + $.param({
+                'enterprise': enterprise,
+                'phone_number' : phone_number
+            }),
+            type: "DELETE",
+            // data: {
+            //     'phone_number': phone_number,
+            //     'enterprise': enterprise
+            // },
+            success: function () {
+                $("#text_to_send").val('');
+                refreshMessages();
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        })
+    });
+
 });

@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 class MainSearchView(View):
+    http_method_names = ['get', 'post', 'delete']
+
     @staticmethod
     def get(request):
         return render(request, 'chat/chat.html')
@@ -34,6 +36,23 @@ class MainSearchView(View):
         return render(request, 'chat/chat_messaging.html', {
             'sms_messages': sms_messages
         })
+
+    @staticmethod
+    def delete(request):
+        deleting_params = SMSSendForm(request.GET)
+        if deleting_params.is_valid():
+            phone_number = deleting_params.cleaned_data['phone_number']
+            enterprise = deleting_params.cleaned_data['enterprise']
+            SMSMessage.objects.filter(
+                Q(from_sender=phone_number) | Q(to_receiver=phone_number),
+                enterprise__name=enterprise,
+            ).delete()
+
+            return JsonResponse({'status': 'Ok'}, status=200)
+        else:
+            return JsonResponse(
+                {'form_errors': deleting_params.errors}, status=400
+            )
 
 
 class SMSSendView(View):

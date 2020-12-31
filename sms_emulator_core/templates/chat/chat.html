@@ -37,6 +37,35 @@
         </div>
     </div>
 
+    <div class="modal fade" id="delete_messages_modal" tabindex="-1" role="dialog"
+         aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        Deleting all messages
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure, that you want to delete from database all
+                    messages for the selected phone number?
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_delete_messages" type="button"
+                            data-dismiss="modal"
+                            class="btn btn-danger"> Delete all messages
+                        changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row justify-content-md-center mb-4">
         <div class="col-md-10">
 
@@ -45,6 +74,12 @@
                     <form id="form_sending_sms" class="send-message-form">
                         {% csrf_token %}
                         <div class="input-group">
+                            <button id="btn_call_delete" type="button"
+                                data-toggle="modal"
+                                data-target="#delete_messages_modal"
+                                class="btn btn-danger pull-left">
+                            <i class="fa fa-remove"></i> Clear
+                        </button>
                             <input id="text_to_send" type="text"
                                    name="text_to_send"
                                    class="form-control input-sm"

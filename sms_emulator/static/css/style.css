@@ -89,3 +89,11 @@
     width: 75px;
     height: 75px;
 }
+
+#btn_send_message {
+    border-radius: 0 8px 8px 0 !important;
+}
+
+#btn_call_delete {
+    border-radius: 12px 0 0 12px !important;
+}
