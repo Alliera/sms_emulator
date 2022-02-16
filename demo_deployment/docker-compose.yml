@@ -20,7 +20,7 @@ services:
     container_name: sms_emulator-main
     depends_on:
       - db
-    image: python:3.7-slim-buster
+    image: python:3.9-slim-bullseye
     restart: always
     links:
       - db
