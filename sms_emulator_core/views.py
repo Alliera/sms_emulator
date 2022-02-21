@@ -18,7 +18,9 @@ class MainSearchView(View):
 
     @staticmethod
     def get(request):
-        return render(request, 'chat/chat.html')
+        return render(request, 'chat/chat.html', {
+            'enterprises': Enterprise.objects.all()
+        })
 
     @staticmethod
     def post(request):
