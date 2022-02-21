@@ -16,7 +16,11 @@
                         <label for="enterprise">Enterprise</label>
                         <select id="enterprise" name="enterprise" type="text"
                                 class="form-control">
-                            <option value="feedback_36">feedback_36</option>
+                            {% for enterprise in enterprises  %}
+                                <option value="{{ enterprise.name }}">
+                                    {{ enterprise.name }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-group col-6">
