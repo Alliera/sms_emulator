@@ -62,7 +62,6 @@
                     <button id="btn_delete_messages" type="button"
                             data-dismiss="modal"
                             class="btn btn-danger"> Delete all messages
-                        changes
                     </button>
                 </div>
             </div>
@@ -74,7 +73,15 @@
         <div class="col-md-10">
 
             <div class="card">
-                <div class="card-header">
+                <div class="card-body messages-box">
+
+                    <ul id="messages_list" class="list-unstyled messages-list">
+
+                    </ul>
+
+                </div>
+
+                <div class="card-footer">
                     <form id="form_sending_sms" class="send-message-form">
                         {% csrf_token %}
                         <div class="input-group">
@@ -97,14 +104,6 @@
                             </span>
                         </div>
                     </form>
-                </div>
-
-                <div class="card-body messages-box">
-
-                    <ul id="messages_list" class="list-unstyled messages-list">
-
-                    </ul>
-
                 </div>
             </div>
 

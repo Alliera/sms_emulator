@@ -27,7 +27,7 @@
 
                     <small class="time-messages text-muted">
                         <span class="fa fa-clock-o"></span>&nbsp;
-                        {{ sms_message.creation|date:"Y-m-d H:m:s" }}
+                        {{ sms_message.creation|date:"Y-m-d H:i:s" }}
                     </small>
                 </div>
                 <p class="messages-p {% if sms_message.direction == 'Incoming' %}alert-primary{% else %}alert-success{% endif %}">
@@ -39,7 +39,7 @@
                     <small>{{ sms_message.from_sender }}</small>
 
                     <br>
-                    {{ sms_message.text }}
+                    <span class="message-text">{{ sms_message.text }}</span>
                 </p>
             </div>
         </li>

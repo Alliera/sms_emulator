@@ -33,7 +33,7 @@ class MainSearchView(View):
         sms_messages = SMSMessage.objects.filter(
             Q(from_sender=phone_number) | Q(to_receiver=phone_number),
             enterprise__name=enterprise,
-        ).order_by('-creation')
+        ).order_by('creation')
 
         return render(request, 'chat/chat_messaging.html', {
             'sms_messages': sms_messages

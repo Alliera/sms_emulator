@@ -18,7 +18,7 @@
 }
 
 .messages-box {
-    max-height: 28rem;
+    max-height: 30rem;
     overflow: auto;
 }
 
@@ -95,5 +95,14 @@
 }
 
 #btn_call_delete {
-    border-radius: 12px 0 0 12px !important;
+    border-radius: 8px 0 0 8px !important;
+}
+
+.card {
+    min-height: 420px;
+    font-size: 14px;
+}
+
+.message-text {
+    font-size: 16px;
 }
