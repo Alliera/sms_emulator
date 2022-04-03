@@ -1,5 +1,4 @@
 $(function () {
-
     function refreshMessages() {
         var phone_number = $("#phone_number").val();
         var enterprise = $("#enterprise").val();
@@ -24,7 +23,7 @@ $(function () {
     }
 
     setInterval(function () {
-        refreshMessages()
+        refreshMessages();
     }, 7000);
 
 
@@ -72,6 +71,10 @@ $(function () {
                     },
                     success: function (result) {
                         $("#messages_list").empty().html(result);
+                        var elem = document.getElementById(
+                            'messages-card'
+                        );
+                        elem.scrollTop = elem.scrollHeight;
                     },
                     error: function (xhr, resp, text) {
                         console.log(xhr, resp, text);
